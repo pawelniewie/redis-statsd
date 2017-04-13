@@ -47,7 +47,8 @@ KEYSPACE_COUNTERS = {
 }
 KEYSPACE_GAUGES = {
     'avg_ttl': 'avg_ttl',
-    'keys': 'keys'
+    'keys': 'keys',
+    'expires': 'expires_gauge'
 }
 
 last_seens = {}
@@ -129,27 +130,30 @@ while True:
 
     for g in GAUGES:
         if g in stats:
-            send_metric('{}.{}'.format(args.prefix, g), 'g', float(stats[g]))
+            send_metric('{}.{}'.format(args.prefix, GAUGES[g]), 'g', float(stats[g]))
 
     for c in COUNTERS:
         if c in stats:
-            send_metric('{}.{}'.format(args.prefix, c), 'c', float(stats[c]))
+            send_metric('{}.{}'.format(args.prefix, COUNTERS[c]), 'c', float(stats[c]))
 
     for ks in stats['keyspaces']:
         for kc in KEYSPACE_COUNTERS:
             if kc in stats['keyspaces'][ks]:
                 send_metric('{}.keyspace.{}'.format(
-                    args.prefix, kc), 'c',
+                    args.prefix, KEYSPACE_COUNTERS[kc]), 'c',
                 float(stats['keyspaces'][ks][kc]), ['keyspace={}'.format(ks)]
                 )
 
         for kg in KEYSPACE_GAUGES:
             if kg in stats['keyspaces'][ks]:
                 send_metric('{}.keyspace.{}'.format(
-                    args.prefix, kg), 'g',
+                    args.prefix, KEYSPACE_GAUGES[kg]), 'g',
                     float(stats['keyspaces'][ks][kg]), ['keyspace={}'.format(ks)]
                 )
 
     out_sock.close()
-    time.sleep(10)
 
+    if args.period != 0:
+        time.sleep(args.period)
+    else:
+        break
