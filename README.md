@@ -32,7 +32,7 @@ Collect metrics from Redis and emit to StatsD
 
 optional arguments:
   -h, --help            show this help message and exit
-  --period PERIOD       The period at which to collect and emit metrics
+  --period PERIOD       The period at which to collect and emit metrics (0 means run once)
   --prefix PREFIX       The prefix to use for metric names
   --redis-host REDIS_HOST
                         The address of the Redis host to connect to
