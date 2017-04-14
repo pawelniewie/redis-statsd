@@ -153,7 +153,4 @@ while True:
 
     out_sock.close()
 
-    if args.period != 0:
-        time.sleep(args.period)
-    else:
-        break
+    time.sleep(args.period)

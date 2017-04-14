@@ -32,7 +32,7 @@ Collect metrics from Redis and emit to StatsD
 
 optional arguments:
   -h, --help            show this help message and exit
-  --period PERIOD       The period at which to collect and emit metrics (0 means run once)
+  --period PERIOD       The period at which to collect and emit metrics
   --prefix PREFIX       The prefix to use for metric names
   --redis-host REDIS_HOST
                         The address of the Redis host to connect to
@@ -44,3 +44,9 @@ optional arguments:
                         The port of the Redis port to connect to
   --no-tags             Disable tags for use with DogStatsD
 ```
+
+# Running with upstart (Ubuntu <= 14.04)
+
+`cp upstart-redis-statd.conf /etc/init/redis-statsd.conf`
+
+`initctl start redis-statsd`
